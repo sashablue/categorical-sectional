@@ -25,7 +25,40 @@ $ cd ~/categorical-sectional/MapConfig
 $ npm install
 $ node /home/pi/categorical-sectional/MapConfig/build/index.js &
 
+# led service
+$ cat /lib/systemd/system/map-led.service 
+[Unit]
+Description=categorical-sectional map leds
+After=syslog.target network.target
 
+[Service]
+User=pi
+WorkingDirectory=/home/pi/categorical-sectional
+ExecStart=/home/pi/.pyenv/versions/3.7.17/bin/python controller.py
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+# web config service
+$ cat /lib/systemd/system/map-webconf.service 
+[Unit]
+Description=categorical-sectional Web MapConfig
+Documentation=https://github.com/JohnMarzulli/categorical-sectional/tree/release
+Documentation=https://nodesource.com/blog/running-your-node-js-app-with-systemd-part-1
+After=network.target
+
+[Service]
+Type=simple
+ExecStartPre=/bin/bash -c 'while ! /bin/nc -z localhost 8080 >/dev/null 2>&1; do /bin/sleep 10; done'
+ExecStart=/usr/bin/node /home/pi/categorical-sectional/MapConfig/build/index.js
+Restart=on-failure
+
+SyslogIdentifier=mapconfig
+
+[Install]
+WantedBy=multi-user.target
 
 
 
