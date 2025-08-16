@@ -18,3 +18,25 @@ $ sudo raspi-config # Run 'raspi-config' and enable the SPI bus under Advanced
 $ cd ~/categorical-sectional
 $ python3 setup.py develop # No sudo needed as running under venv 3.7.17 on user pi
 $ pip install "urllib3<2" "requests<2.32" # fix for:     _TYPE_REDUCE_RESULT = tuple[typing.Callable[..., object], tuple[object, ...]]
+
+# Debug commands
+# Check if installed on the OS
+$ apt-cache policy  python3-rpi.gpio
+python3-rpi.gpio:
+  Installed: (none)
+  Candidate: 0.7.1~a4-1+b2
+  Version table:
+     0.7.1~a4-1+b2 500
+        500 http://raspbian.raspberrypi.com/raspbian bookworm/main armhf Packages
+# check the location where is installed in venv
+pi@pi-zero-2w:~/categorical-sectional $ pip show rpi.gpio
+Name: RPi.GPIO
+Version: 0.7.1
+Summary: A module to control Raspberry Pi GPIO channels
+Home-page: http://sourceforge.net/projects/raspberry-gpio-python/
+Author: Ben Croston
+Author-email: ben@croston.org
+License: MIT
+Location: /home/pi/.pyenv/versions/3.7.17/lib/python3.7/site-packages/RPi.GPIO-0.7.1-py3.7-linux-armv7l.egg
+Requires: 
+Required-by: cateorical-sectional
