@@ -63,7 +63,10 @@ WantedBy=multi-user.target
 # Wi-Fi setup:
 sudo nmtui - add new connection
 
-
+# Realtek RTL8811AU driver for RPI 2
+# https://github.com/lwfinger/rtw88?tab=readme-ov-file
+# Fix for: Error!  Build of rtw_8723de.ko failed for: 6.12.34+rpt-rpi-v7 (armv7l)
+# https://github.com/lwfinger/rtw88/issues/363
 
 # Debug commands
 
