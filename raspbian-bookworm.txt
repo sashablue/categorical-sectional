@@ -18,6 +18,7 @@ $ sudo raspi-config # Run 'raspi-config' and enable the SPI bus under Advanced
 $ cd ~/categorical-sectional
 $ python3 setup.py develop # No sudo needed as running under venv 3.7.17 on user pi
 $ pip install "urllib3<2" "requests<2.32" # fix for:     _TYPE_REDUCE_RESULT = tuple[typing.Callable[..., object], tuple[object, ...]]
+$ python controller.py &
 
 # MapConfig
 $ cd ~/categorical-sectional/MapConfig
