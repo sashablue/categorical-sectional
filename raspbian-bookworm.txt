@@ -31,10 +31,13 @@ $ node /home/pi/categorical-sectional/MapConfig/build/index.js &
 
 
 
-
-
 # Debug commands
-# Check if installed on the OS
+
+# check if the os is 32bit or 64bit
+$ file /usr/bin/ls
+/usr/bin/ls: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-armhf.so.3, BuildID[sha1]=73a3ba02d9f4bf3632cbebe139c6a844ca5076d3, for GNU/Linux 3.2.0, stripped
+
+# Check if package is installed in the OS
 $ apt-cache policy  python3-rpi.gpio
 python3-rpi.gpio:
   Installed: (none)
@@ -42,6 +45,7 @@ python3-rpi.gpio:
   Version table:
      0.7.1~a4-1+b2 500
         500 http://raspbian.raspberrypi.com/raspbian bookworm/main armhf Packages
+
 # check the location where is installed in venv
 pi@pi-zero-2w:~/categorical-sectional $ pip show rpi.gpio
 Name: RPi.GPIO
