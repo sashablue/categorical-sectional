@@ -4,9 +4,9 @@ Installation process for raspbian bookworm
 
 # Install pyenv
 # https://github.com/pyenv/pyenv?tab=readme-ov-file
+
 # Install Python build dependencies before attempting to install a new Python version.
 # https://github.com/pyenv/pyenv?tab=readme-ov-file#d-install-python-build-dependencies
-
 
 $ pyenv install 3.7.17
 $ pyenv global 3.7.17
