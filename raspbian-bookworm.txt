@@ -60,7 +60,8 @@ SyslogIdentifier=mapconfig
 [Install]
 WantedBy=multi-user.target
 
-
+# Wi-Fi setup:
+sudo nmtui - add new connection
 
 
 
