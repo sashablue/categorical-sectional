@@ -127,7 +127,54 @@ DEST_MODULE_LOCATION[24]="/updates/dkms/rtw88"
 # POST_INSTALL="dkms/post_install.sh"
 
 
-
+pi@pi2-aero:~ $ cat ~/weather_map/config.json 
+{
+  "mode": "ws2801",
+  "pixel_count": 26,
+  "spi_port": 0,
+  "spi_device": 0,
+  "metar_station_inactive_minutes": 180,
+  "airports_file": "~/weather_map/aquitaine.json",
+  "blink_old_stations": false,
+  "night_lights": true,
+  "night_populated_yellow": false,
+  "snow_pulse": false,
+  "snow_twinkle": true,
+  "night_category_proportion": 0.1,
+  "brightness_proportion": 0.6,
+  "visualizer": 0
+}
+pi@pi2-aero:~ $ cat ~/weather_map/aquitaine.json
+{
+  "ws2801": [
+    { "LEPP": { "neopixel": 0 } },
+    { "LESO": { "neopixel": 1 } },
+    { "LFBZ": { "neopixel": 2 } },
+    { "LFBP": { "neopixel": 3 } },
+    { "LFBT": { "neopixel": 4 } },
+    { "LFBF": { "neopixel": 5 } },
+    { "LFMK": { "neopixel": 6 } },
+    { "LFMP": { "neopixel": 7 } },
+    { "LFMU": { "neopixel": 8 } },
+    { "LFCR": { "neopixel": 9 } },
+    { "LFBO": { "neopixel": 10 } },
+    { "LFBA": { "neopixel": 11 } },
+    { "LFBM": { "neopixel": 12 } },
+    { "LFBY": { "neopixel": 13 } },
+    { "LFBC": { "neopixel": 14 } },
+    { "LFBD": { "neopixel": 15 } },
+    { "LFBE": { "neopixel": 16 } },
+    { "LFLW": { "neopixel": 17 } },
+    { "LFHP": { "neopixel": 18 } },
+    { "LFLC": { "neopixel": 19 } },
+    { "LFSL": { "neopixel": 20 } },
+    { "LFBX": { "neopixel": 21 } },
+    { "LFBG": { "neopixel": 22 } },
+    { "LFBH": { "neopixel": 23 } },
+    { "LFBI": { "neopixel": 24 } },
+    { "LFBL": { "neopixel": 25 } }
+  ]
+}
 
 
 
