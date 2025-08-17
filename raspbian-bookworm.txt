@@ -126,7 +126,7 @@ DEST_MODULE_LOCATION[24]="/updates/dkms/rtw88"
 
 # POST_INSTALL="dkms/post_install.sh"
 
-
+# configs
 pi@pi2-aero:~ $ cat ~/weather_map/config.json 
 {
   "mode": "ws2801",
@@ -177,7 +177,11 @@ pi@pi2-aero:~ $ cat ~/weather_map/aquitaine.json
 }
 
 
-
+# API changes
+# https://aviationweather.gov/help/upcoming/#api
+pi@pi2-aero:~/categorical-sectional/data $ grep https://aviationweather.gov/ ~/categorical-sectional/data_sources/weather.py 
+#    request_url = 'https://aviationweather.gov/cgi-bin/data/metar.php?ids={}&hours=0&order=id%2C-obs&sep=true'.format(metar_list)
+    request_url = 'https://aviationweather.gov/api/data/metar?ids={}&hours=0&order=id%2C-obs&sep=true'.format(metar_list)
 
 
 
