@@ -4,7 +4,7 @@ Simple wrapper around a logger.
 import logging
 import logging.handlers
 import threading
-from datetime import datetime
+from datetime import datetime, timezone
 
 LOG_NAME = "weathermap"
 
@@ -44,8 +44,7 @@ class Logger(object):
             __lock__.acquire()
 
             if print_to_screen:
-                text = "{} INFO: {}".format(
-                    datetime.utcnow(), __escape__(message_to_log))
+                text = f"{datetime.now(timezone.utc)} INFO: {__escape__(message_to_log)}"
                 print(text)
             self.__logger__.info(__escape__(message_to_log))
         finally:
@@ -58,7 +57,7 @@ class Logger(object):
         try:
             __lock__.acquire()
 
-            text = "{} WARN: {}".format(datetime.utcnow(), message_to_log)
+            text = f"{datetime.now(timezone.utc)} WARN: {message_to_log}"
             self.__logger__.warning(__escape__(text))
         finally:
             __lock__.release()

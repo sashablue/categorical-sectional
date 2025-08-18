@@ -6,3 +6,4 @@ cateorical_sectional.egg-info
 MapConfig/node_modules/*
 .vscode/*
 .vscode/settings.json
+build/

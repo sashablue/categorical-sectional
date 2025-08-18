@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from configuration import configuration
 from lib import colors as colors_lib
@@ -98,7 +98,7 @@ class HolidayLights(Visualizer):
         self,
         time_slice: float
     ):
-        current_seconds = datetime.utcnow().second
+        current_seconds = datetime.now(timezone.utc).second
         pixel_count = configuration.CONFIG[configuration.PIXEL_COUNT_KEY]  # 1
         brightness_adjustment = configuration.get_brightness_proportion()
         red = colors_lib.get_brightness_adjusted_color(

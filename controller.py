@@ -26,7 +26,7 @@
 
 import threading
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 
 import lib.colors as colors_lib
 import lib.local_debug as local_debug
@@ -166,17 +166,14 @@ def render_thread():
             loaded_visualizers[visualizer_index].update(delta_time)
 
             show_debug_pixels = debug_pixels_timer is None or (
-                datetime.utcnow() - debug_pixels_timer).total_seconds() > 60.0
+                datetime.now(timezone.utc) - debug_pixels_timer).total_seconds() > 60.0
 
             if show_debug_pixels:
                 for index in range(renderer.pixel_count):
                     station = get_station_by_led(index)
-                    safe_logging.safe_log('[{}/{}]={}'.format(
-                        station,
-                        index,
-                        renderer.pixels[index]))
+                    safe_logging.safe_log(f'[{station}/{index}]={renderer.pixels[index]}')
 
-                debug_pixels_timer = datetime.utcnow()
+                debug_pixels_timer = datetime.now(timezone.utc)
 
             toc = time.perf_counter()
         except KeyboardInterrupt:
@@ -195,8 +192,7 @@ def wait_for_all_stations():
         try:
             weather.get_metar(airport)
         except Exception as ex:
-            safe_logging.safe_log_warning(
-                "Error while initializing with airport={}, EX={}".format(airport, ex))
+            safe_logging.safe_log_warning(f"Error while initializing with airport={airport}, EX={ex}")
 
     return True
 
@@ -233,7 +229,7 @@ def __test_all_leds__():
     to make sure the wiring is correct and that none have failed.
     """
     for color in __get_test_cycle_colors__():
-        safe_logging.safe_log("Setting to {}".format(color))
+        safe_logging.safe_log(f"Setting to {color}")
         __all_leds_to_color__(color)
         time.sleep(0.5)
 

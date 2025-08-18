@@ -1,5 +1,5 @@
 import random
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Tuple
 
 import lib.colors as colors_lib
@@ -209,7 +209,7 @@ def get_color_by_precipitation(
             proportion = get_twinkle_proportion()
         elif configuration.get_snow_pulse():
             proportion = get_pulse_interval_proportion(
-                datetime.utcnow(),
+                datetime.now(timezone.utc),
                 pulse_interval)
         else:
             proportion = 1.0

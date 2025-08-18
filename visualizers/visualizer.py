@@ -1,5 +1,5 @@
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 
 from configuration import configuration
 from data_sources import weather
@@ -223,7 +223,7 @@ class BlinkingVisualizer(Visualizer):
             is_blink {bool} -- Is this on the "off" cycle of blinking.
         """
 
-        start_time = datetime.utcnow()
+        start_time = datetime.now(timezone.utc)
 
         for station in self.__stations__:
             try:
@@ -231,14 +231,11 @@ class BlinkingVisualizer(Visualizer):
                     station,
                     is_blink)
             except Exception as ex:
-                safe_logging.safe_log_warning(
-                    'Catch-all error in render_station_displays of {} EX={}'.format(
-                        station,
-                        ex))
+                safe_logging.safe_log_warning(f'Catch-all error in render_station_displays of {station} EX={ex}')
 
         self.__renderer__.show()
 
-        return (datetime.utcnow() - start_time).total_seconds()
+        return (datetime.now(timezone.utc) - start_time).total_seconds()
 
     def update(
         self,
