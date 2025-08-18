@@ -35,8 +35,9 @@ After=syslog.target network.target
 User=pi
 WorkingDirectory=/home/pi/categorical-sectional
 ExecStart=/home/pi/.pyenv/versions/3.7.17/bin/python controller.py
-
 Restart=always
+
+SyslogIdentifier=mapled
 
 [Install]
 WantedBy=multi-user.target
