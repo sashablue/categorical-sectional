@@ -60,9 +60,3 @@ SyslogIdentifier=mapconfig
 
 [Install]
 WantedBy=multi-user.target
-
-# API changes
-# https://aviationweather.gov/help/upcoming/#api
-pi@pi2-aero:~/categorical-sectional/data $ grep https://aviationweather.gov/ ~/categorical-sectional/data_sources/weather.py 
-#    request_url = 'https://aviationweather.gov/cgi-bin/data/metar.php?ids={}&hours=0&order=id%2C-obs&sep=true'.format(metar_list)
-    request_url = 'https://aviationweather.gov/api/data/metar?ids={}&hours=0&order=id%2C-obs&sep=true'.format(metar_list)
