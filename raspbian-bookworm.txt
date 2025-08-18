@@ -24,7 +24,7 @@ $ python controller.py &
 # MapConfig
 $ cd ~/categorical-sectional/MapConfig
 $ npm install
-$ node /home/pi/categorical-sectional/MapConfig/build/index.js &
+$ sudo node /home/pi/categorical-sectional/MapConfig/build/index.js &
 
 # led service
 $ cat /lib/systemd/system/map-led.service 
