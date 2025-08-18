@@ -18,8 +18,8 @@ sudo raspi-config # Enable the SPI bus
 cd ~/categorical-sectional/MapConfig/
 npm install
 cd ~/categorical-sectional
-wget https://davidmegginson.github.io/ourairports-data/airports.csv -O data/airports.csv
-sed -i 's*cgi-bin/data/metar.php?ids=*api/data/metar?ids=*' data_sources/weather.py
+wget https://davidmegginson.github.io/ourairports-data/airports.csv -O data/airports.csv # download each time to be up to date
+sed -i 's*cgi-bin/data/metar.php?ids=*api/data/metar?ids=*' data_sources/weather.py # Check if there aren't any API changes: https://aviationweather.gov/help/upcoming/#api
 
 # Testing
 python controller.py &
