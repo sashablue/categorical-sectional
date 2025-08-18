@@ -25,7 +25,7 @@ sed -i 's*cgi-bin/data/metar.php?ids=*api/data/metar?ids=*' data_sources/weather
 python controller.py &
 sudo node /home/pi/categorical-sectional/MapConfig/build/index.js &
 
-# led service
+# LED service
 $ cat /lib/systemd/system/map-led.service 
 [Unit]
 Description=categorical-sectional map leds
@@ -37,12 +37,12 @@ WorkingDirectory=/home/pi/categorical-sectional
 ExecStart=/home/pi/.pyenv/versions/3.7.17/bin/python controller.py
 Restart=always
 
-SyslogIdentifier=mapled
+SyslogIdentifier=map-led
 
 [Install]
 WantedBy=multi-user.target
 
-# web config service
+# Web config page service
 $ cat /lib/systemd/system/map-webconf.service 
 [Unit]
 Description=categorical-sectional Web MapConfig
@@ -56,7 +56,7 @@ ExecStartPre=/bin/bash -c 'while ! /bin/nc -z localhost 8080 >/dev/null 2>&1; do
 ExecStart=/usr/bin/node /home/pi/categorical-sectional/MapConfig/build/index.js
 Restart=on-failure
 
-SyslogIdentifier=mapconfig
+SyslogIdentifier=map-webconf
 
 [Install]
 WantedBy=multi-user.target
