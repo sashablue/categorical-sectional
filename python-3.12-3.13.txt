@@ -1,0 +1,65 @@
+# Tested with python virtual environment versions 3.12.11 and 3.13.7
+
+# Install pyenv
+# https://github.com/pyenv/pyenv?tab=readme-ov-file
+# Install Python build dependencies before attempting to install a new Python version.
+# https://github.com/pyenv/pyenv?tab=readme-ov-file#d-install-python-build-dependencies
+
+
+pyenv global <venv_version>
+
+sudo apt install nodejs
+sudo apt install npm
+git clone https://github.com/sashablue/categorical-sectional.git
+cd categorical-sectional
+git checkout python-3.12-compat
+pip install -e .
+sudo raspi-config # Enable the SPI bus
+cd ~/categorical-sectional/MapConfig/
+npm install
+cd ~/categorical-sectional
+
+# Testing
+python controller.py &
+sudo node /home/pi/categorical-sectional/MapConfig/build/index.js &
+
+# led service
+$ cat /lib/systemd/system/map-led.service 
+[Unit]
+Description=categorical-sectional map leds
+After=syslog.target network.target
+
+[Service]
+User=pi
+WorkingDirectory=/home/pi/categorical-sectional
+ExecStart=/home/pi/.pyenv/versions/3.7.17/bin/python controller.py
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+# web config service
+$ cat /lib/systemd/system/map-webconf.service 
+[Unit]
+Description=categorical-sectional Web MapConfig
+Documentation=https://github.com/JohnMarzulli/categorical-sectional/tree/release
+Documentation=https://nodesource.com/blog/running-your-node-js-app-with-systemd-part-1
+After=network.target
+
+[Service]
+Type=simple
+ExecStartPre=/bin/bash -c 'while ! /bin/nc -z localhost 8080 >/dev/null 2>&1; do /bin/sleep 10; done'
+ExecStart=/usr/bin/node /home/pi/categorical-sectional/MapConfig/build/index.js
+Restart=on-failure
+
+SyslogIdentifier=mapconfig
+
+[Install]
+WantedBy=multi-user.target
+
+# API changes
+# https://aviationweather.gov/help/upcoming/#api
+pi@pi2-aero:~/categorical-sectional/data $ grep https://aviationweather.gov/ ~/categorical-sectional/data_sources/weather.py 
+#    request_url = 'https://aviationweather.gov/cgi-bin/data/metar.php?ids={}&hours=0&order=id%2C-obs&sep=true'.format(metar_list)
+    request_url = 'https://aviationweather.gov/api/data/metar?ids={}&hours=0&order=id%2C-obs&sep=true'.format(metar_list)
