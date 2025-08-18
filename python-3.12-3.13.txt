@@ -5,8 +5,8 @@
 # Install Python build dependencies before attempting to install a new Python version.
 # https://github.com/pyenv/pyenv?tab=readme-ov-file#d-install-python-build-dependencies
 
-
-pyenv global <venv_version>
+pyenv install 3.XX.XX
+pyenv global <3.XX.XX>
 
 sudo apt install nodejs
 sudo apt install npm
