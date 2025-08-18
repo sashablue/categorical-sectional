@@ -113,7 +113,7 @@ def __get_utc_datetime__(
         datetime -- The parsed date time.
     """
 
-    return datetime.strptime(datetime_string, "%Y-%m-%dT%H:%M:%S+00:00")
+    return datetime.fromisoformat(datetime_string)
 
 
 def __set_cache__(
