@@ -22,7 +22,7 @@ wget https://davidmegginson.github.io/ourairports-data/airports.csv -O data/airp
 sed -i 's*cgi-bin/data/metar.php?ids=*api/data/metar?ids=*' data_sources/weather.py # Check if there aren't any API changes: https://aviationweather.gov/help/upcoming/#api
 echo "vm.swappiness = 1" | sudo tee -a /etc/sysctl.conf ; sudo sysctl -p # Optional
 sudo raspi-config - Menu 1, Menu S5, Menu B1, Reboot # Optional
-# Enable log2ram and tmpfs # Optional, needs more ram depending on the app running memory usage
+# Enable log2ram and tmpfs # Optional, needs more ram depending on the running app memory usage
 # https://www.dzombak.com/blog/2024/04/pi-reliability-reduce-writes-to-your-sd-card/ 
 # sudo install -o pi -g pi -d /var/log/weathermap ; sed -i 's*weathermap.log*/var/log/weathermap/weathermap.log*' lib/logger.py ; sudo systemctl restart map-led
 
