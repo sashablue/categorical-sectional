@@ -115,3 +115,5 @@ $ cat weather_map/config.json
     "spi_device": 0,
     "spi_port": 0,
     "visualizer": 0
+}
+
