@@ -451,6 +451,7 @@ This mode cycles all of the stations through the spectrum, but all stations shif
 
 | Version | Change                                                                                                                                                                                                                                                                                 |
 | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2.2.1   | Update weather data source to new aviationweather.gov API.
 | 2.1.1   | Fix issue where newer versions of Python would not let the code to run. Update to newer NOAA source. Show name of visualizer.
 | 2.1     | Change precipitation visualizer to pulse the snow color to make it distinct from "nothing"
 | 2.0.1   | Minor tweak to ceiling categorization.                                                                                                                                                                                                                                                 |

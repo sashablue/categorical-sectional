@@ -36,6 +36,7 @@ UNKNOWN = 'UNKNOWN'
 
 __cache_lock__ = threading.Lock()
 __rest_session__ = requests.Session()
+__rest_session__.headers.update({'User-Agent': 'VFR-Light-Map/2.2.1'})
 __daylight_cache__ = {}
 __metar_report_cache__ = {}
 __station_last_called__ = {}
@@ -483,58 +484,6 @@ def get_twilight_transition(
     return proportion_off_to_night, proportion_night_to_color
 
 
-def extract_metar_from_html_line(
-    raw_metar_line
-):
-    """
-    Takes a raw line of HTML from the METAR report and extracts the METAR from it.
-    NOTE: A "$" at the end of the line indicates a "maintenance check" and is part of the report.
-
-    Arguments:
-        metar {string} -- The raw HTML line that may include BReaks and other HTML elements.
-
-    Returns:
-        string -- The extracted METAR.
-    """
-
-    metar = re.sub('<[^<]+?>', '', raw_metar_line)
-    metar = metar.replace('\n', '')
-    metar = metar.strip()
-
-    return metar
-
-
-def get_metar_from_report_line(
-    metar_report_line_from_webpage
-):
-    """
-    Extracts the METAR from the line in the webpage and sets
-    the data into the cache.
-
-    Returns None if an error occurs or nothing can be found.
-
-    Arguments:
-        metar_report_line_from_webpage {string} -- The line that contains the METAR from the web report.
-
-    Returns:
-        string,string -- The identifier and extracted METAR (if any), or None
-    """
-
-    identifier = None
-    metar = None
-
-    try:
-        metar = extract_metar_from_html_line(metar_report_line_from_webpage)
-
-        if len(metar) < 1:
-            return (None, None)
-
-        identifier = metar.split(' ')[0]
-        __set_cache__(identifier, __metar_report_cache__, metar)
-    except Exception:
-        metar = None
-
-    return (identifier, metar)
 
 
 def __is_station_ok_to_call__(
@@ -636,24 +585,26 @@ def get_metar_reports_from_web(
     """
 
     metars = {}
-    metar_list = "%20".join(airport_icao_codes)
-    request_url = 'https://aviationweather.gov/cgi-bin/data/metar.php?ids={}&hours=0&order=id%2C-obs&sep=true'.format(metar_list)
-    stream = urllib.request.urlopen(request_url, timeout=2)
+    metar_list = ",".join(airport_icao_codes)
+    request_url = 'https://aviationweather.gov/api/data/metar?ids={}&format=json'.format(metar_list)
 
-    stream_lines = stream.readlines()
-    stream.close()
-    for line in stream_lines:
-        line_as_string = line.decode("utf-8")
+    try:
+        response = __rest_session__.get(request_url, timeout=2)
+        response.raise_for_status()
+        json_data = response.json()
 
-        identifier, metar = get_metar_from_report_line(line_as_string)
+        for metar_item in json_data:
+            identifier = metar_item.get('icaoId')
+            raw_metar = metar_item.get('rawOb')
 
-        if identifier is None:
-            continue
+            if identifier and raw_metar:
+                metars[identifier] = raw_metar
+                __station_last_called__[identifier] = datetime.now(timezone.utc)
 
-        # If we get a good report, go ahead and shove it into the results.
-        if metar is not None:
-            metars[identifier] = metar
-            __station_last_called__[identifier] = datetime.now(timezone.utc)
+    except requests.exceptions.RequestException as e:
+        safe_log_warning(f"Error fetching METAR data: {e}")
+    except ValueError as e: # Catches JSON decoding errors
+        safe_log_warning(f"Error decoding METAR JSON response: {e}")
 
     return metars
 
