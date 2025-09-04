@@ -633,10 +633,12 @@ def get_metar(
     # Make sure that we used the most recent reports we can.
     # Metars are normally updated hourly.
     if is_cache_valid and cached_metar != INVALID:
-        metar_age = get_metar_age(cached_metar).total_seconds() / 60.0
+        metar_age_td = get_metar_age(cached_metar)
+        if metar_age_td is not None:
+            metar_age = metar_age_td.total_seconds() / 60.0
 
-        if use_cache and metar_age < DEFAULT_METAR_LIFESPAN_MINUTES:
-            return cached_metar
+            if use_cache and metar_age < DEFAULT_METAR_LIFESPAN_MINUTES:
+                return cached_metar
 
     try:
         metars = get_metars([airport_icao_code])
@@ -699,33 +701,41 @@ def get_metar_timestamp(
     current_time: datetime = datetime.now(timezone.utc)
 ) -> datetime:
     try:
-        metar_date = current_time - timedelta(days=31)
-
         if metar is not None and metar != INVALID:
-            partial_date_time = metar.split(' ')[1]
-            partial_date_time = partial_date_time.split('Z')[0]
+            # Find the timestamp component, which ends with 'Z'
+            timestamp_component = None
+            for component in metar.split(' '):
+                if component.endswith('Z') and component[:-1].isdigit():
+                    timestamp_component = component
+                    break
 
-            day_number = int(partial_date_time[:2])
-            hour = int(partial_date_time[2:4])
-            minute = int(partial_date_time[4:6])
+            if timestamp_component:
+                partial_date_time = timestamp_component.split('Z')[0]
 
-            metar_date = datetime(
-                current_time.year,
-                current_time.month,
-                day_number,
-                hour,
-                minute,
-                tzinfo=timezone.utc)
+                day_number = int(partial_date_time[:2])
+                hour = int(partial_date_time[2:4])
+                minute = int(partial_date_time[4:6])
 
-            # Assume that the report is from the past, and work backwards.
-            days_back = 0
-            while metar_date.day != day_number and days_back <= 31:
-                metar_date -= timedelta(days=1)
-                days_back += 1
+                metar_date = datetime(
+                    current_time.year,
+                    current_time.month,
+                    day_number,
+                    hour,
+                    minute,
+                    tzinfo=timezone.utc)
 
-        return metar_date
+                # Assume that the report is from the past, and work backwards.
+                days_back = 0
+                while metar_date.day != day_number and days_back <= 31:
+                    metar_date -= timedelta(days=1)
+                    days_back += 1
+
+                return metar_date
+
     except Exception:
         return None
+
+    return None # Return None if parsing fails or metar is invalid
 
 
 def get_metar_age(
