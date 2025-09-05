@@ -20,7 +20,7 @@ cd ~/categorical-sectional/MapConfig/
 npm install
 cd ~/categorical-sectional
 wget https://davidmegginson.github.io/ourairports-data/airports.csv -O data/airports.csv # download each time to be up to date
-sed -i 's*cgi-bin/data/metar.php?ids=*api/data/metar?ids=*' data_sources/weather.py # API details: https://aviationweather.gov/help/upcoming/#api
+### sed -i 's*cgi-bin/data/metar.php?ids=*api/data/metar?ids=*' data_sources/weather.py # API details: https://aviationweather.gov/help/upcoming/#api
 echo "vm.swappiness = 1" | sudo tee -a /etc/sysctl.conf ; sudo sysctl -p
 sudo raspi-config - Menu 1, Menu S5, Menu B1, Reboot # Optionally disable the Desktop GUI
 # Enable log2ram and tmpfs # Optional, needs some RAM depending on the running app memory usage
