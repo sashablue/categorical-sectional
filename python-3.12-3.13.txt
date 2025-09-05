@@ -12,7 +12,8 @@ sudo apt install nodejs
 sudo apt install npm
 git clone https://github.com/sashablue/categorical-sectional.git
 cd categorical-sectional
-git checkout python-3.12-compat
+### git checkout python-3.12-compat
+git checkout feature/update-weather-api
 pip install -e .
 sudo raspi-config # Enable the SPI bus
 cd ~/categorical-sectional/MapConfig/
